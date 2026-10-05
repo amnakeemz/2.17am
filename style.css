@@ -1,0 +1,2106 @@
+/* =========================================================
+   2:17 AM
+   CINEMATIC HORROR GAME
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #020307;
+    color: white;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+button {
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   MAIN GAME
+========================================================= */
+
+#game {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at center,
+            #111827 0%,
+            #05070c 50%,
+            #010204 100%
+        );
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+#background {
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(50, 65, 90, .25),
+            rgba(0, 0, 0, .95) 75%
+        );
+
+    transition:
+        transform 2s ease,
+        filter 2s ease,
+        opacity 2s ease;
+}
+
+#background-glow {
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(120, 140, 170, .08),
+            transparent 50%
+        );
+
+    pointer-events: none;
+}
+
+#background-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, .15),
+            rgba(0, 0, 0, .55)
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+#camera {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    transform:
+        scale(1)
+        translate3d(0, 0, 0);
+
+    transform-origin: center center;
+
+    transition:
+        transform 2.8s cubic-bezier(.22,.61,.36,1),
+        filter 2.8s ease;
+}
+
+#scene-world {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    transform-origin: center center;
+}
+
+#room {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            #101521 0%,
+            #090d16 45%,
+            #04060a 100%
+        );
+}
+
+
+/* =========================================================
+   ROOM
+========================================================= */
+
+.ceiling {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 18%;
+
+    background:
+        linear-gradient(
+            180deg,
+            #171d29,
+            #0d111a
+        );
+}
+
+.wall {
+    position: absolute;
+
+    top: 15%;
+    height: 60%;
+
+    background:
+        linear-gradient(
+            180deg,
+            #111722,
+            #080b12
+        );
+}
+
+.wall-left {
+    left: 0;
+    width: 35%;
+}
+
+.wall-center {
+    left: 35%;
+    width: 40%;
+}
+
+.wall-right {
+    right: 0;
+    width: 25%;
+}
+
+.floor {
+    position: absolute;
+
+    left: -10%;
+    bottom: -20%;
+
+    width: 120%;
+    height: 48%;
+
+    background:
+        linear-gradient(
+            180deg,
+            #080a0e,
+            #020306
+        );
+
+    transform:
+        perspective(600px)
+        rotateX(55deg);
+
+    transform-origin: top center;
+}
+
+
+/* =========================================================
+   BED
+========================================================= */
+
+#bed {
+    position: absolute;
+
+    left: 7%;
+    bottom: 16%;
+
+    width: 34%;
+    height: 30%;
+
+    transition:
+        transform 1.8s ease,
+        filter 1.8s ease;
+}
+
+.bed-frame {
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 25%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #17120f,
+            #29201a,
+            #100c09
+        );
+
+    border-radius: 4px;
+}
+
+.mattress {
+    position: absolute;
+
+    left: 3%;
+    top: 20%;
+
+    width: 94%;
+    height: 45%;
+
+    background:
+        linear-gradient(
+            180deg,
+            #687080,
+            #272d36
+        );
+
+    border-radius: 10px 10px 5px 5px;
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.7);
+}
+
+.blanket {
+    position: absolute;
+
+    right: 0;
+    top: 0;
+
+    width: 60%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #222a35,
+            #10151d
+        );
+
+    border-radius: 0 10px 5px 0;
+}
+
+.pillow {
+    position: absolute;
+
+    left: 5%;
+    top: 12%;
+
+    width: 25%;
+    height: 45%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #c0c3c5,
+            #555b64
+        );
+
+    border-radius: 8px;
+}
+
+.bed-shadow {
+    position: absolute;
+
+    left: 10%;
+    bottom: -20px;
+
+    width: 80%;
+    height: 40px;
+
+    background: rgba(0,0,0,.7);
+
+    filter: blur(15px);
+}
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+#wall-clock {
+    position: absolute;
+
+    top: 20%;
+    left: 45%;
+
+    width: 80px;
+    height: 80px;
+}
+
+.clock-face {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 50%;
+
+    background: #080a0d;
+
+    border:
+        2px solid
+        rgba(200,210,220,.3);
+
+    box-shadow:
+        0 0 30px rgba(0,0,0,.8);
+}
+
+.clock-number {
+    position: absolute;
+
+    font-size: 8px;
+    color: #aab2bb;
+}
+
+.n12 {
+    top: 5px;
+    left: 50%;
+
+    transform: translateX(-50%);
+}
+
+.n3 {
+    right: 6px;
+    top: 50%;
+
+    transform: translateY(-50%);
+}
+
+.n6 {
+    bottom: 5px;
+    left: 50%;
+
+    transform: translateX(-50%);
+}
+
+.n9 {
+    left: 6px;
+    top: 50%;
+
+    transform: translateY(-50%);
+}
+
+.clock-hand {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 2px;
+
+    background: #b9c0c8;
+
+    transform-origin: bottom center;
+}
+
+.hour {
+    height: 22px;
+
+    transform:
+        translate(-50%, -100%)
+        rotate(65deg);
+}
+
+.minute {
+    height: 29px;
+
+    transform:
+        translate(-50%, -100%)
+        rotate(20deg);
+}
+
+
+/* =========================================================
+   DOOR
+========================================================= */
+
+#door-area {
+    position: absolute;
+
+    right: 8%;
+    bottom: 16%;
+
+    width: 25%;
+    height: 60%;
+
+    perspective: 1000px;
+}
+
+#hallway {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #161a20,
+            #030405 70%
+        );
+
+    overflow: hidden;
+}
+
+.hall-light {
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 5px;
+    height: 100%;
+
+    background: rgba(200,200,200,.06);
+
+    filter: blur(8px);
+}
+
+.hall-wall {
+    position: absolute;
+
+    inset: 10%;
+
+    border-left:
+        1px solid rgba(255,255,255,.03);
+
+    border-right:
+        1px solid rgba(255,255,255,.03);
+}
+
+.hall-shadow {
+    position: absolute;
+
+    width: 20%;
+    height: 70%;
+
+    left: 40%;
+    top: 20%;
+
+    background: #000;
+
+    filter: blur(12px);
+
+    opacity: 0;
+
+    transition:
+        opacity 1.5s ease,
+        transform 3s ease;
+}
+
+.hall-shadow.show {
+    opacity: .8;
+
+    transform:
+        scale(1.4)
+        translateY(20px);
+}
+
+#door-frame {
+    position: absolute;
+
+    inset: 0;
+
+    background: #07080a;
+
+    border:
+        7px solid
+        #1b1c1e;
+
+    box-shadow:
+        0 0 35px rgba(0,0,0,.8);
+
+    z-index: 3;
+}
+
+#door {
+    position: absolute;
+
+    inset: 0;
+
+    transform-origin: left center;
+
+    transform:
+        rotateY(0deg);
+
+    transition:
+        transform 2s cubic-bezier(.2,.7,.2,1);
+
+    transform-style: preserve-3d;
+
+    background: #17181b;
+}
+
+.door-surface {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #28292c,
+            #121316 55%,
+            #08090b
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.06);
+}
+
+.door-panel {
+    position: absolute;
+
+    left: 15%;
+    width: 70%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.04);
+}
+
+.door-panel.top {
+    top: 10%;
+    height: 32%;
+}
+
+.door-panel.bottom {
+    bottom: 10%;
+    height: 32%;
+}
+
+#door-handle {
+    position: absolute;
+
+    right: 10%;
+    top: 50%;
+
+    width: 10px;
+    height: 28px;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #555,
+            #aaa,
+            #333
+        );
+
+    transform:
+        translateY(-50%);
+
+    transition:
+        transform .25s ease;
+}
+
+#door-handle.move {
+    transform:
+        translateY(-50%)
+        rotate(25deg);
+}
+
+#door.open {
+    transform:
+        rotateY(-105deg);
+}
+
+
+/* =========================================================
+   WINDOW
+========================================================= */
+
+#window-area {
+    position: absolute;
+
+    right: 42%;
+    top: 21%;
+
+    width: 22%;
+    height: 38%;
+}
+
+#window-frame {
+    position: absolute;
+
+    inset: 0;
+
+    border:
+        7px solid
+        #17191d;
+
+    box-shadow:
+        0 0 40px rgba(0,0,0,.8);
+}
+
+#window {
+    position: absolute;
+
+    inset: 0;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            #030611,
+            #0b101b
+        );
+}
+
+.night-sky {
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 70% 25%,
+            rgba(255,255,255,.15),
+            transparent 5%
+        );
+}
+
+.moon {
+    position: absolute;
+
+    right: 15%;
+    top: 12%;
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 35%,
+            #fff,
+            #aaa
+        );
+
+    box-shadow:
+        0 0 30px rgba(255,255,255,.2);
+}
+
+.window-building {
+    position: absolute;
+
+    left: 5%;
+    bottom: 0;
+
+    width: 90%;
+    height: 40%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #05070b,
+            #10131a,
+            #05070b
+        );
+}
+
+.curtain {
+    position: absolute;
+
+    top: 0;
+
+    width: 22%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #20242a,
+            #090b0e
+        );
+
+    transition:
+        transform 1.5s ease;
+}
+
+.curtain.left {
+    left: 0;
+}
+
+.curtain.right {
+    right: 0;
+}
+
+#window-shadow {
+    position: absolute;
+
+    left: 40%;
+    bottom: 0;
+
+    width: 25%;
+    height: 75%;
+
+    background: #000;
+
+    border-radius:
+        50% 50% 20% 20%;
+
+    filter: blur(5px);
+
+    opacity: 0;
+
+    transform:
+        translateY(50px)
+        scale(.7);
+
+    transition:
+        opacity 1.3s ease,
+        transform 2s ease;
+}
+
+#window-shadow.appear {
+    opacity: .9;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+#phone-object {
+    position: absolute;
+
+    left: 34%;
+    bottom: 25%;
+
+    width: 85px;
+    height: 150px;
+
+    transform:
+        rotate(-5deg);
+
+    transition:
+        transform 2s cubic-bezier(.2,.7,.2,1),
+        filter 2s ease;
+}
+
+.phone-body {
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #25282d,
+            #08090b
+        );
+
+    border:
+        2px solid
+        #34383e;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.8);
+}
+
+#phone-screen {
+    position: absolute;
+
+    left: 8px;
+    right: 8px;
+
+    top: 9px;
+    bottom: 25px;
+
+    border-radius: 9px;
+
+    background: #020304;
+
+    opacity: 0;
+
+    transform: scale(.8);
+
+    transition:
+        opacity .7s ease,
+        transform .7s ease;
+
+    overflow: hidden;
+
+    text-align: center;
+}
+
+#phone-screen.on {
+    opacity: 1;
+
+    transform: scale(1);
+
+    background:
+        radial-gradient(
+            circle at center,
+            #273445,
+            #080b10
+        );
+
+    box-shadow:
+        0 0 30px rgba(100,140,180,.3);
+}
+
+.phone-status {
+    margin-top: 10px;
+
+    font-size: 8px;
+
+    color: #ccd4df;
+}
+
+.phone-icon {
+    margin-top: 25px;
+
+    font-size: 25px;
+
+    animation:
+        phonePulse 1s infinite;
+}
+
+.phone-caller {
+    margin-top: 10px;
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+}
+
+.phone-message {
+    margin-top: 5px;
+
+    font-size: 7px;
+
+    color: #8e99a6;
+}
+
+.phone-button {
+    position: absolute;
+
+    bottom: 8px;
+    left: 50%;
+
+    width: 12px;
+    height: 12px;
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 50%;
+
+    background: #17191c;
+}
+
+.phone-glow {
+    position: absolute;
+
+    inset: -30px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(100,140,180,.18),
+            transparent 60%
+        );
+
+    opacity: 0;
+
+    transition:
+        opacity .8s ease;
+}
+
+#phone-object.on .phone-glow {
+    opacity: 1;
+}
+
+#phone-object.ringing {
+    animation:
+        phoneShake .18s infinite;
+}
+
+
+/* =========================================================
+   PERSON SHADOW
+========================================================= */
+
+#person-shadow {
+    position: absolute;
+
+    right: 16%;
+    bottom: 15%;
+
+    width: 90px;
+    height: 270px;
+
+    opacity: 0;
+
+    transform:
+        translateX(120px)
+        scale(.8);
+
+    transition:
+        opacity 1.5s ease,
+        transform 2s cubic-bezier(.2,.7,.2,1);
+
+    filter: blur(3px);
+
+    z-index: 20;
+}
+
+#person-shadow.show {
+    opacity: .7;
+
+    transform:
+        translateX(0)
+        scale(1);
+}
+
+.shadow-head {
+    position: absolute;
+
+    top: 0;
+    left: 25px;
+
+    width: 42px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    background: #000;
+}
+
+.shadow-body {
+    position: absolute;
+
+    left: 10px;
+    top: 45px;
+
+    width: 70px;
+    height: 180px;
+
+    border-radius:
+        40px 40px 10px 10px;
+
+    background: #000;
+}
+
+.shadow-arm {
+    position: absolute;
+
+    right: -20px;
+    top: 65px;
+
+    width: 25px;
+    height: 130px;
+
+    background: #000;
+
+    transform:
+        rotate(-8deg);
+
+    border-radius: 20px;
+}
+
+
+/* =========================================================
+   MYSTERY BOX
+========================================================= */
+
+#mystery-box {
+    position: absolute;
+
+    left: 47%;
+    bottom: 17%;
+
+    width: 110px;
+    height: 90px;
+
+    opacity: .8;
+
+    transform:
+        scale(.9);
+
+    transition:
+        transform 1s ease,
+        opacity 1s ease;
+}
+
+.box-body {
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 70%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3b281b,
+            #16100b
+        );
+
+    border:
+        2px solid
+        #59402c;
+}
+
+.box-top {
+    position: absolute;
+
+    left: -3%;
+    top: 10%;
+
+    width: 106%;
+    height: 20%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #543a25,
+            #21160d
+        );
+
+    transform:
+        skewX(-5deg);
+
+    z-index: 2;
+}
+
+.box-lock {
+    position: absolute;
+
+    left: 50%;
+    top: 35%;
+
+    width: 12px;
+    height: 20px;
+
+    transform:
+        translateX(-50%);
+
+    background: #9a7546;
+
+    border-radius: 2px;
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+#top-hud {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    padding:
+        20px 25px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    z-index: 100;
+
+    pointer-events: none;
+}
+
+.hud-title {
+    font-size: 11px;
+
+    letter-spacing: 4px;
+
+    color: rgba(255,255,255,.7);
+}
+
+.hud-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#scene-counter {
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: rgba(255,255,255,.45);
+}
+
+#sound-button {
+    pointer-events: auto;
+
+    width: 35px;
+    height: 35px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    background:
+        rgba(0,0,0,.3);
+
+    color: white;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   SCREENS
+========================================================= */
+
+.screen {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 50;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 1s ease;
+}
+
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+#start-screen {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(20,27,40,.5),
+            rgba(0,0,0,.95)
+        );
+}
+
+.start-content {
+    width: 90%;
+    max-width: 600px;
+
+    animation:
+        startAppear 2s ease;
+}
+
+.small-label {
+    font-size: 9px;
+
+    letter-spacing: 5px;
+
+    color: #697382;
+
+    margin-bottom: 20px;
+}
+
+.start-content h1 {
+    font-size: clamp(55px, 14vw, 120px);
+
+    letter-spacing: 12px;
+
+    font-weight: 300;
+
+    text-shadow:
+        0 0 40px rgba(255,255,255,.1);
+}
+
+.start-description {
+    margin-top: 25px;
+
+    color: #7d8795;
+
+    line-height: 1.8;
+
+    font-size: 13px;
+}
+
+.main-button {
+    margin-top: 35px;
+
+    padding:
+        14px 38px;
+
+    background:
+        rgba(255,255,255,.04);
+
+    border:
+        1px solid
+        rgba(255,255,255,.3);
+
+    color: white;
+
+    letter-spacing: 4px;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+    transition:
+        background .3s ease,
+        transform .3s ease,
+        box-shadow .3s ease;
+}
+
+.main-button:hover {
+    background:
+        rgba(255,255,255,.12);
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 0 30px rgba(255,255,255,.08);
+}
+
+.start-warning {
+    margin-top: 30px;
+
+    font-size: 8px;
+
+    letter-spacing: 3px;
+
+    color: #414954;
+}
+
+
+/* =========================================================
+   STORY
+========================================================= */
+
+#story-screen {
+    pointer-events: none;
+}
+
+#scene-information {
+    position: absolute;
+
+    left: 30px;
+    bottom: 25px;
+
+    z-index: 80;
+
+    opacity: .7;
+}
+
+#scene-location {
+    font-size: 9px;
+
+    letter-spacing: 3px;
+}
+
+#scene-time {
+    margin-top: 5px;
+
+    font-size: 8px;
+
+    color: #7d8795;
+}
+
+#story-container {
+    position: absolute;
+
+    left: 50%;
+    bottom: 30px;
+
+    width: min(700px, 88%);
+
+    transform:
+        translateX(-50%);
+
+    padding: 25px 30px;
+
+    pointer-events: auto;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(5,7,11,.35),
+            rgba(5,7,11,.92)
+        );
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.08);
+
+    backdrop-filter:
+        blur(12px);
+
+    box-shadow:
+        0 -20px 80px rgba(0,0,0,.4);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+}
+
+#story-container.hidden {
+    opacity: 0;
+
+    transform:
+        translateX(-50%)
+        translateY(30px);
+}
+
+#story-location {
+    font-size: 9px;
+
+    letter-spacing: 3px;
+
+    color: #707b8b;
+}
+
+#story-time {
+    margin-top: 5px;
+
+    font-size: 8px;
+
+    color: #4e5865;
+}
+
+#story-text {
+    margin-top: 18px;
+
+    min-height: 55px;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    color: #d4d9df;
+}
+
+#choices {
+    margin-top: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.choice {
+    width: 100%;
+
+    padding:
+        13px 15px;
+
+    text-align: left;
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    color: #aeb7c2;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    transition:
+        background .3s ease,
+        border .3s ease,
+        transform .3s ease,
+        color .3s ease;
+}
+
+.choice:hover {
+    background:
+        rgba(255,255,255,.08);
+
+    border-color:
+        rgba(255,255,255,.25);
+
+    color: white;
+
+    transform:
+        translateX(5px);
+}
+
+.choice:disabled {
+    opacity: .4;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   TRANSITION
+========================================================= */
+
+#transition {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 200;
+
+    background: #000;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+#transition.active {
+    animation:
+        cinematicTransition 1.2s ease;
+}
+
+
+/* =========================================================
+   SYSTEM MESSAGE
+========================================================= */
+
+#system-message {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    z-index: 300;
+
+    transform:
+        translate(-50%, -50%);
+
+    font-size: 10px;
+
+    letter-spacing: 5px;
+
+    color: #b8c0ca;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+#system-message.show {
+    animation:
+        systemGlitch 2s ease;
+}
+
+
+/* =========================================================
+   ENDING
+========================================================= */
+
+#ending-screen {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(40,0,0,.15),
+            #000 70%
+        );
+}
+
+.ending-content {
+    width: 90%;
+    max-width: 650px;
+
+    position: relative;
+
+    z-index: 5;
+}
+
+#ending-id {
+    font-size: 9px;
+
+    letter-spacing: 4px;
+
+    color: #68717d;
+}
+
+#ending-title {
+    margin-top: 15px;
+
+    font-size: clamp(45px, 12vw, 90px);
+
+    letter-spacing: 7px;
+
+    font-weight: 300;
+
+    text-shadow:
+        0 0 50px rgba(255,0,0,.15);
+}
+
+#ending-text {
+    margin-top: 20px;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    color: #747d88;
+}
+
+#death-effect {
+    position: absolute;
+
+    inset: 0;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle,
+            transparent 20%,
+            rgba(100,0,0,.3)
+        );
+}
+
+#ending-screen.dead #death-effect {
+    animation:
+        deathFlash 1.2s ease;
+}
+
+#ending-screen.dead #ending-title {
+    color: #e5e5e5;
+
+    animation:
+        deathGlitch .8s infinite;
+}
+
+#ending-screen.dead {
+    animation:
+        screenShake .15s 4;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+#loading-screen {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 999;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    background: #020304;
+
+    transition:
+        opacity 1s ease;
+}
+
+#loading-screen.hide {
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+.loading-text {
+    font-size: 9px;
+
+    letter-spacing: 5px;
+
+    color: #69717c;
+}
+
+.loading-line {
+    width: 120px;
+    height: 1px;
+
+    margin-top: 15px;
+
+    background: #20242a;
+}
+
+.loading-line div {
+    width: 0;
+    height: 100%;
+
+    background: #aab1bb;
+
+    animation:
+        loading 1.5s ease forwards;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes loading {
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes startAppear {
+    from {
+        opacity: 0;
+        transform:
+            translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0);
+    }
+}
+
+@keyframes phonePulse {
+    0%,100% {
+        transform: scale(1);
+        opacity: .7;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+}
+
+@keyframes phoneShake {
+    0% {
+        transform:
+            rotate(-5deg)
+            translateX(0);
+    }
+
+    25% {
+        transform:
+            rotate(-8deg)
+            translateX(-4px);
+    }
+
+    50% {
+        transform:
+            rotate(-2deg)
+            translateX(4px);
+    }
+
+    75% {
+        transform:
+            rotate(-8deg)
+            translateX(-3px);
+    }
+
+    100% {
+        transform:
+            rotate(-5deg)
+            translateX(0);
+    }
+}
+
+@keyframes cinematicTransition {
+
+    0% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes systemGlitch {
+
+    0% {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+        transform:
+            translate(-50%, -50%)
+            skewX(20deg);
+    }
+
+    30% {
+        opacity: .3;
+    }
+
+    40% {
+        opacity: 1;
+        transform:
+            translate(-50%, -50%)
+            skewX(-20deg);
+    }
+
+    60% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes deathFlash {
+
+    0% {
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    20% {
+        opacity: .1;
+    }
+
+    30% {
+        opacity: .8;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes deathGlitch {
+
+    0% {
+        transform:
+            translateX(0);
+    }
+
+    25% {
+        transform:
+            translateX(-3px);
+    }
+
+    50% {
+        transform:
+            translateX(3px);
+    }
+
+    75% {
+        transform:
+            translateX(-2px);
+    }
+
+    100% {
+        transform:
+            translateX(0);
+    }
+}
+
+@keyframes screenShake {
+
+    0% {
+        transform:
+            translate(0,0);
+    }
+
+    25% {
+        transform:
+            translate(-5px,2px);
+    }
+
+    50% {
+        transform:
+            translate(5px,-2px);
+    }
+
+    75% {
+        transform:
+            translate(-3px,1px);
+    }
+
+    100% {
+        transform:
+            translate(0,0);
+    }
+}
+
+
+/* =========================================================
+   SCENE CAMERA CLASSES
+========================================================= */
+
+/* Door */
+
+.camera-door {
+    transform:
+        scale(1.65)
+        translate3d(
+            -12%,
+            4%,
+            0
+        );
+}
+
+.camera-door #room {
+    filter:
+        brightness(.72)
+        contrast(1.15);
+}
+
+
+/* Phone */
+
+.camera-phone {
+    transform:
+        scale(2.1)
+        translate3d(
+            14%,
+            10%,
+            0
+        );
+}
+
+.camera-phone #room {
+    filter:
+        brightness(.6)
+        contrast(1.1);
+}
+
+
+/* Window */
+
+.camera-window {
+    transform:
+        scale(1.8)
+        translate3d(
+            13%,
+            4%,
+            0
+        );
+}
+
+
+/* Bed */
+
+.camera-bed {
+    transform:
+        scale(1.7)
+        translate3d(
+            18%,
+            8%,
+            0
+        );
+}
+
+
+/* Shadow */
+
+.camera-shadow {
+    transform:
+        scale(1.45)
+        translate3d(
+            -8%,
+            4%,
+            0
+        );
+
+    filter:
+        brightness(.55)
+        contrast(1.3);
+}
+
+
+/* Box */
+
+.camera-box {
+    transform:
+        scale(1.8)
+        translate3d(
+            -2%,
+            10%,
+            0
+        );
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    #top-hud {
+        padding:
+            15px 15px;
+    }
+
+    .hud-title {
+        font-size: 9px;
+
+        letter-spacing: 3px;
+    }
+
+    #story-container {
+        bottom: 15px;
+
+        padding:
+            20px;
+
+        width: 94%;
+    }
+
+    #story-text {
+        font-size: 13px;
+
+        line-height: 1.7;
+    }
+
+    .choice {
+        font-size: 10px;
+
+        padding:
+            12px;
+    }
+
+    #bed {
+        width: 55%;
+    }
+
+    #door-area {
+        width: 32%;
+    }
+
+    #window-area {
+        width: 28%;
+    }
+
+    #phone-object {
+        width: 65px;
+        height: 120px;
+    }
+
+    #wall-clock {
+        width: 55px;
+        height: 55px;
+    }
+
+    .camera-door {
+        transform:
+            scale(1.9)
+            translate3d(
+                -15%,
+                3%,
+                0
+            );
+    }
+
+    .camera-phone {
+        transform:
+            scale(2.6)
+            translate3d(
+                17%,
+                10%,
+                0
+            );
+    }
+
+    .camera-window {
+        transform:
+            scale(2.2)
+            translate3d(
+                15%,
+                3%,
+                0
+            );
+    }
+
+    .camera-bed {
+        transform:
+            scale(2)
+            translate3d(
+                20%,
+                8%,
+                0
+            );
+    }
+
+    .camera-shadow {
+        transform:
+            scale(1.8)
+            translate3d(
+                -10%,
+                3%,
+                0
+            );
+    }
+
+    .camera-box {
+        transform:
+            scale(2.2)
+            translate3d(
+                -2%,
+                12%,
+                0
+            );
+    }
+}
